@@ -1,1 +1,8 @@
-
+Flask
+requests
+feedparser
+beautifulsoup4
+Pillow
+moviepy
+apscheduler
+python-dotenv
