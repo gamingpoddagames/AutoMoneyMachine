@@ -1,8 +1,9 @@
-def main():
-    print("================================")
-    print(" AutoMoneyMachine Started")
-    print("================================")
+import datetime
 
+print("=" * 40)
+print(" AutoMoneyMachine ")
+print("=" * 40)
 
-if __name__ == "__main__":
-    main()
+print("Current Time:", datetime.datetime.now())
+
+print("System Started Successfully!")
