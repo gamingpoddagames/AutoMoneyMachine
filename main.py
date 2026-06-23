@@ -1,36 +1,55 @@
+import json
+import os
+
 from modules.news import get_news
-from modules.database import connect
 
 RSS_URL = "https://feeds.bbci.co.uk/news/world/rss.xml"
 
-connection = connect()
-cursor = connection.cursor()
+JSON_FILE = "data/articles.json"
 
-articles = get_news(RSS_URL)
 
-saved = 0
-
-for article in articles:
+def load_articles():
+    if not os.path.exists(JSON_FILE):
+        return []
 
     try:
-
-        cursor.execute("""
-        INSERT INTO news(title,link,published)
-        VALUES(?,?,?)
-        """,(
-            article["title"],
-            article["link"],
-            ""
-        ))
-
-        saved += 1
-
+        with open(JSON_FILE, "r", encoding="utf-8") as file:
+            return json.load(file)
     except:
-        pass
+        return []
 
-connection.commit()
-connection.close()
 
-print(f"Downloaded : {len(articles)}")
+def save_articles(data):
+    with open(JSON_FILE, "w", encoding="utf-8") as file:
+        json.dump(data, file, indent=4, ensure_ascii=False)
 
-print(f"Saved      : {saved}")
+
+print("=" * 40)
+print("AutoMoneyMachine")
+print("=" * 40)
+
+existing_articles = load_articles()
+
+existing_links = {article["link"] for article in existing_articles}
+
+rss_articles = get_news(RSS_URL)
+
+new_articles = 0
+
+for article in rss_articles:
+
+    if article["link"] not in existing_links:
+
+        existing_articles.append(article)
+
+        existing_links.add(article["link"])
+
+        new_articles += 1
+
+save_articles(existing_articles)
+
+print(f"Downloaded : {len(rss_articles)}")
+
+print(f"New Articles : {new_articles}")
+
+print(f"Total Saved : {len(existing_articles)}")
