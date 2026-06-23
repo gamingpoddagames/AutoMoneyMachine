@@ -1,15 +1,22 @@
 import feedparser
 
 
-def get_news(url):
-    feed = feedparser.parse(url)
+def get_news(feed_url):
 
-    articles = []
+    feed = feedparser.parse(feed_url)
 
-    for item in feed.entries:
-        articles.append({
-            "title": item.title,
-            "link": item.link
+    news = []
+
+    for article in feed.entries:
+
+        news.append({
+
+            "title": article.title,
+
+            "link": article.link,
+
+            "published": getattr(article, "published", "")
+
         })
 
-    return articles
+    return news
