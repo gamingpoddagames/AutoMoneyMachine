@@ -1,16 +1,36 @@
 from modules.news import get_news
+from modules.database import connect
 
 RSS_URL = "https://feeds.bbci.co.uk/news/world/rss.xml"
 
-print("=" * 40)
-print("AutoMoneyMachine")
-print("=" * 40)
+connection = connect()
+cursor = connection.cursor()
 
 articles = get_news(RSS_URL)
 
-print(f"Found {len(articles)} articles")
+saved = 0
 
-for article in articles[:10]:
-    print("-" * 40)
-    print("Title:", article["title"])
-    print("Link :", article["link"])
+for article in articles:
+
+    try:
+
+        cursor.execute("""
+        INSERT INTO news(title,link,published)
+        VALUES(?,?,?)
+        """,(
+            article["title"],
+            article["link"],
+            ""
+        ))
+
+        saved += 1
+
+    except:
+        pass
+
+connection.commit()
+connection.close()
+
+print(f"Downloaded : {len(articles)}")
+
+print(f"Saved      : {saved}")
