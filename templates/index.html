@@ -1,9 +1,38 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
 
-{% block content %}
+<head>
 
-<h1>AutoMoneyMachine</h1>
+<meta charset="UTF-8">
 
-<p>Latest News</p>
+<title>AutoMoneyMachine</title>
 
-{% endblock %}
+</head>
+
+<body>
+
+<h1>Latest World News</h1>
+
+<hr>
+
+{% for article in articles %}
+
+<h3>{{ article.title }}</h3>
+
+<p>
+
+<a href="{{ article.link }}" target="_blank">
+
+Read More
+
+</a>
+
+</p>
+
+<hr>
+
+{% endfor %}
+
+</body>
+
+</html>
