@@ -6,20 +6,14 @@ cursor = connection.cursor()
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS news(
-
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-title TEXT,
-
-link TEXT,
-
-published TEXT
-
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT UNIQUE,
+    link TEXT,
+    published TEXT
 )
 """)
 
 connection.commit()
-
 connection.close()
 
-print("Database Created Successfully")
+print("Database Ready")
